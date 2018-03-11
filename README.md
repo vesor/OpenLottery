@@ -23,16 +23,16 @@ S = id + LuckyNumber + SumOfAllLuckyNumbers + TimeSeed + Salt
 3) SumOfAllLuckyNumbers make sure you cannot control lottery result only by yourself. It is controled by all the participants.
 
 4) TimeSeed is to make sure the result is different everytime, in case if we want to do lottery multiple times. 
-It doesn't need to be accurate. You can use 20180101A for first place prices, 20180101B for second place prices, etc.
+It doesn't need to be accurate. You can use 20180101A for first place prizes, 20180101B for second place prizes, etc.
 
-5) Salt could be a very long string, which makes it very hard to compute hash(S). 
-So that even if we know all S, it still hard for one to try to find a LuckyNumber which makes a hash(S) small.
-Salt can also be provided by the helder of the lottery, which makes sure the lottery result can't be manupilated even if all the participants make an agreement to cheat.
+5) Salt is optional, it could be a very long string, which makes it very hard to compute hash(S). 
 
 ## NOTE: 
-for LuckyNumber, if we want to make sure a participant cannot have chance to adjust his/her LuckyNumber according to other one's LuckyNumber, we may need to use a two phase commit way. 
+id, TimeSeed, Salt all must be determined *before* LuckyNumbers are provided. Otherwise one can itentionally select an  id/TimeSeed/Salt which makes some hash(S) small, by trying different values of id/TimeSeed/Salt.
 
-That is: everyone commit his/her hash(LuckyNumber) in first round, then commit LuckyNumber in second round.
+For LuckyNumber, we need to use a two phase commit way. First, everyone publish/commit his/her hash(LuckyNumber). Then everyone publish/commit LuckyNumber.
+
+This make sure a participant cannot have chance to adjust his/her LuckyNumber according to other one's LuckyNumber/SumOfAllLuckyNumbers.
 
 It is said Ethereum use such way to generate random numbers.
 
